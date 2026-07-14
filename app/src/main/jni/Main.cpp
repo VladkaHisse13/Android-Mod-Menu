@@ -19,6 +19,18 @@
 #include "dobby.h"
 
 int scoreMul = 1, coinsMul = 1;
+bool safetyCarSlow = false;
+// Переменная для хранения оригинального метода игры
+float (*old_CalculateDesiredSpeed)(void *instance);
+
+// Наша кастомная функция, которая подменяет оригинальную
+float new_CalculateDesiredSpeed(void *instance) {
+    if (safetyCarSlow) {
+        return 1.5f; // Если тумблер включен, машина безопасности будет еле ехать
+    }
+    return old_CalculateDesiredSpeed(instance); // Если выключен — едет с обычной скоростью
+}
+
 
 // Do not change or translate the first text unless you know what you are doing
 // Assigning feature numbers is optional. Without it, it will automatically count for you, starting from 0
@@ -257,6 +269,7 @@ void hack_thread() {
     //HOOK(targetLibName, "_example__sym", Kill, old_Kill);
     //HOOK_NO_ORIG("libFileC.so", "0x123456", FunctionExample);
     //HOOK_NO_ORIG("libFileC.so", "_example__sym", FunctionExample);
+    HOOK_NO_ORIG(targetLibName, "0x416574", new_CalculateDesiredSpeed, old_CalculateDesiredSpeed);
 
     //PATCH(targetLibName, "0x10709AC", "E05F40B2C0035FD6");
 
