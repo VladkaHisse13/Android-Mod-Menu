@@ -12,15 +12,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: set up JDK 8
+    - name: Set up JDK 17 (For Wrapper Generation)
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Generate Compatible Gradle Wrapper
+      run: gradle wrapper --gradle-version 6.1.1
+
+    - name: Set up JDK 8 (For Project Build)
       uses: actions/setup-java@v4
       with:
         java-version: '8'
         distribution: 'temurin'
         cache: gradle
-
-    - name: Generate Compatible Gradle Wrapper
-      run: gradle wrapper --gradle-version 6.1.1
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
