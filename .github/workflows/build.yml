@@ -18,14 +18,17 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
 
+    - name: Setup Android NDK r21e
+      uses: android-actions/setup-android@v3
+      with:
+        ndk-version: '21.4.7075529'
+
     - name: Setup Gradle 6.1.1
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-version: '6.1.1'
 
     - name: Build with Gradle
-      env:
-        JAVA_HOME: ${{ env.JAVA_HOME }}
       run: gradle assembleDebug
 
     - name: Upload APK
