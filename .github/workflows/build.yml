@@ -19,7 +19,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Generate Compatible Gradle Wrapper
-      run: gradle wrapper --gradle-version 6.1.1
+      run: gradle wrapper --gradle-version 6.1.1 --no-project-version
 
     - name: Set up JDK 8 (For Project Build)
       uses: actions/setup-java@v4
